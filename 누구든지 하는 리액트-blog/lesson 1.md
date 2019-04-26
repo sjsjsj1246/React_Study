@@ -15,3 +15,72 @@ There are a HTML code
 </div>
 ```
 
+- If we want to press the button and change the number 0, we need to find reference of each DOM element
+
+```{.html}
+var number = 0;
+var elNumber = document.getElementById('number');
+var btnIncrease = document.getElementById('increase');
+
+btnIncrease.onclick = function() {
+  number++;
+  elNumber.innerText = number;
+}
+```
+
+- If use jQuery, we'll use $('#number') than document.getElementById
+
+- If your project doesn't have much interaction, you don't actually need a font-end library. 
+- But if the project grows and provides a wide variety of user interaction, then managing and coding many of the DOM elements is really going to be harder
+
+- Several libraries and frameworks were created to minimize complex DOM management and value update managementm, and to focus on functional development and implementation of user interfaces.
+
+## Select library/framework
+
+- Angular
+- React
+- Vue
+
+## Why facebook make react?
+
+>We built React to solve one problem: building large applications with data that changes over time.
+
+(영작 힘들어요ㅠㅠ)
+- 페이스북이 리액트를 만들기 전에 이미 Angular, Backbone 등의 수많은 프레임워크들이 존재했다.
+- 해당 프레임워크들은 대부분 MVC 패턴 그리고 MVC에서 파생된 MVVM, MVW 등의 패턴들로 이뤄져있다.
+- 여기서 공통점은 모델이다. 프레임워크들의 모델은 대부분 양방향 바인딩을 통하여 모델에 있는 값이 변하면 뷰에서도 이를 변화시켜준다.
+- 변화(Mutation)는 상당히 복잡한 작업이다. 특정 이벤트가 발생했을 때, 모델에 변화를 일으키고 변화를 일으킴에 따라 어떤 DOM을 가져와서 어떠한 방식으로 뷰를 업데이트 해줄 지 로직을 정해줘야 한다.
+
+- 그런데 페이스북은 리액트를 만들 때 이러한 발상을 했다.
+>그냥 Mutation을 하지 말자, 그 대신에 데이터가 바뀌면 그냥 뷰를 날려버리고 새로 만들자.
+
+- 그렇게 하면 진짜 간단하긴 하겠지만 그때 그때 새로 뷰를 만들어버리면 성능적으로 문제가 있을 것이다.
+- 그래서 생겨난 것이 Virtual DOM이다.
+
+## Virtual DOM
+
+- Virtual DOM은 가상의 DOM이다. 변화가 일어나면, 실제로 브라우저의 DOM에 새로운 것을 넣는 것이 아니라, 자바스크립트로 이뤄진 가상 DOM에 한번 렌더링을 하고, 기존의 DOM과 비교를 한 다음에 정말 변화가 필요한 곳에만 업데이트를 해주는 것이다.
+- Virtual DOM을 사용함으로서, 데이터가 바뀌었을 때 더이상 어떻게 업데이트를 할 지를 고려하는게 아니라, 그냥 일단 바뀐 데이터로 그려놓고 비교한다음에 바뀐 부분만 찾아서 바꿔주는 것이다.
+- 참고 자료 : [React and the Virtual DOM](https://www.youtube.com/watch?v=muc2ZF0QIO4)
+- Virtual DOM은 DOM의 변화를 최소화시켜주는 역할을 한다. 이 횟수를 최소화시키는 것은 성능적으로 중요하다. [참고](https://velopert.com/3236)
+
+## 리액트를 특별하게 만드는 점은?
+
+**엄청난 생태계**  
+jQquery가 처음 나왔을 때와 비슷하게 개발자들의 열정이 뜨겁다. 수많은 플러그인이 있다.
+
+**사용하는 곳이 많다**  
+Airbnb, BBC, Coursera, Facebook, Twitch, eBay ...  
+
+**한번 사용해보면 좋아하게된다!**  
+통계적으로 그렇다..
+
+## 리액트를 사용하게 됨으로써 앞으로 겪게 될 일들
+
+- 리엑트는 자유도가 높은 라이브러리이다. 라우터, 상태관리 기능들이 리액트 자체에 내장되어 있지 않다. 하지만 써드 파티 라이브러리가 존재한다.
+- 라우터 : React-router, Next.js, After.js
+- 상태 관리 라이브러리 : Redux, MobX, fr(e)actal
+- 컴포넌트 스타일링을 할 때도 수많은 방식으로 할 수 있다.
+
+- 리액트는 뷰만 관리하고 나머지 기능은 써드 파티 라이브러리가 담당하게 함으로써, 리액트는 리액트 대로 성숙하고 나머지 라이브러리는 많은 개발자가 다양한 시도가 가능하다.
+
