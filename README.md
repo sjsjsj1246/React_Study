@@ -9,3 +9,6 @@ Study react and organization
 **blog**
 - https://velopert.com/reactjs-tutorials
 
+**book**
+- leraning react
+    ![](img\learning-react.jpg)
