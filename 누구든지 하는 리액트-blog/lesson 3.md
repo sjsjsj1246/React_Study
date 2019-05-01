@@ -1,0 +1,249 @@
+# 리액트 3편:JSX
+
+## 컴포넌트 파일 파헤치기
+
+이랙트를 사용하면 여러분의 웹 애플리케이션에서 사용하는 유저 인터페이스를 재사용 가능한 컴포넌트로 분리하여 작성함으로써, 프로젝트의 유지보수성을 우수하게 해준다.  
+여기서 컴포넌트에 해당하는 코드는 App.js에서 활인해볼 수 있다.
+
+App.js
+```{.js}
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+```
+import 한다는 것은, 무엇을 불러온다는 것이다. 첫 번째 코드는 리액트와 그 내부의 Component를 불러온다. 파일에서 JSX를 사용하려면, 꼭 React를 import 해주어야 한다.  
+이렇게 import를 하는 것은 우리가 webpack을 사용하기에 가능한 작업이다. 이렇게 불러오고 나면 나중에 프로젝트에서 사용한 프로젝트를 한 파일에 모두 결합해주는 작업을 진행하고, 자바스크립트 파일을 불러오게 되면 모든 코드들이 제대로 로인되게끔 순서를 설정하고 하나의 파일로 합쳐준다.  
+그리고 svg처럼 사전에 따로 설정을 되지 않은 확장자의 경우 그냥 파일로 불러온 다음에 나중에 특정 경로에 사본을 만들어주게 되고 해당 사본의 경로를 텍스트로 받아오게 된다.
+
+```{.js}
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+```
+컴포넌트를 만드는 방법은 두가지가 있다. 그 중 하나는 위처럼 함수를 통하여 만드는 것이고 또다른 방법은 클래스를 통해서 만드는 것이다.  
+return 하는 내용이 JSX이다.
+
+```{.js}
+export default App;
+```
+작성한 컴포넌트를 다른 곳에서 불러와서 사용 할 수 있도록 내보내기를 해준다
+
+index.js
+```{.js}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+//우리가 만든 컴포넌트를 이렇게 import해서 불러온다
+import * as serviceWorker from './serviceWorker';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+```
+
+브라우저 상에 이랙트 컴포넌트를 보여주기 위해서 ReactDOM.render 함수를 사용한다. 첫 번째 파라미터는 렌더링 할 결과물이고, 두 번째 파라미터는 컴포넌트를 어떤 DOM에 그릴지 정해줍니다.  
+id가 root인 컴포넌트를 찾아서 그리도록 설정되어있다
+
+public/index.html 파일에 있다.
+```{.js}
+<div id="root"></div>
+```
+
+## JSX
+
+jsx는 html과 비슷하게 생겼지만 자바스크립트이다.  
+리액트 개발을 편하게 하기 위해서 HTMl과 비슷한 문법으로 작성을 하면 이를 React.createElement를 사용하는 자바스크립트 형태로 변환시켜주는 것이다.  
+몇가지 규칙을 반드시 지켜야 한다.  
+- 태그는 반드시 닫혀있어야 한다. input이나 br태그도 마찬가지이다.
+- 두개 이상의 앨리먼트는 무조건 하나의 앨리먼트로 감싸져있어야 한다.
+```{.js}
+import React, { Component } from 'react';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        Hello
+      </div>
+      <div>
+        Bye
+      </div>
+    );
+  }
+}
+//컴파일 에러
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <div>
+          Hello
+        </div>
+        <div>
+          Bye
+        </div>
+      </div>
+    );
+  }
+}
+//정상
+
+//div를 사용하기 싫을 때는 Fragment 사용
+import React, { Component, Fragment } from 'react';
+
+class App extends Component {
+  render() {
+    return (
+      <Fragment>
+        <div>
+          Hello
+        </div>
+        <div>
+          Bye
+        </div>
+      </Fragment>
+    );
+  }
+}
+
+export default App;
+```
+
+- JSX 내부에서 자바스크립트 값은 {}로 감싸서 사용 가능  
+- 조건부 렌더링
+    - jSX 내부에서 조건부 렌더링을 할 때는 보통 삼항 연산자를 사용하거나, AND 연산자를 사용한다. 반면에 if문을 사용할 수는 없다. (IIFE를 사용하면 할수는 있다)
+    ```{.js}
+    import React, { Component } from 'react';
+
+    class App extends Component {
+    render() {
+        return (
+            <div>
+            {
+                1 + 1 === 2 ? (<div>맞아요!</div>) : (<div>틀려요!</div>)
+            }
+            </div>
+            );
+        }
+    }
+
+    export default App;
+    ```
+    - 가끔 복잡합 조건을 작성해야 할 때는 JSX 밖에서 로직을 작성하는 것이 좋다. 하지만 꼭 JSX 내부에서 작성해야 한다면 IIFE를 사용한다.
+    ```{.js}
+    import React, { Component } from 'react';
+
+    class App extends Component {
+        render() {
+            const value = 1;
+            return (
+            <div>
+                {
+                (() => {
+                    if (value === 1) return (<div>하나</div>);
+                    if (value === 2) return (<div>둘</div>);
+                    if (value === 3) return (<div>셋</div>);
+                })()
+                }
+            </div>
+            );
+        }
+    }
+
+    export default App;
+    ```
+- style과 className
+    - JSX에서 style과 CSS 클래스를 설정할 때 html에서 하는 것과는 다르다
+    ```{.js}
+    import React, { Component } from 'react';
+
+    class App extends Component {
+        render() {
+            const style = {
+                backgroundColor: 'black',
+                padding: '16px',
+                color: 'white',
+                fontSize: '12px'
+            };
+
+            return (
+            <div style={style}>
+                hi there
+            </div>
+            );
+        }
+    }
+
+    export default App;
+    ```
+    - 리액트에서는 객체 형태로 작성해줘야 한다.
+- 클래스를 설정할 때는 html에서 class 대신에 className을 사용한다.
+    - App.css 설정
+    ```{.js}
+    .App {
+        background: black;
+        color: aqua;
+        font-size: 36px;
+        padding: 1rem;
+        font-weight: 600;
+    }
+    ```
+    - App.js 설정
+    ```{.js}
+    import React, { Component } from 'react';
+    import './App.css'
+
+    class App extends Component {
+        render() {
+            return (
+            <div className="App">
+                리액트
+            </div>
+            );
+        }
+    }
+
+    export default App;
+    ```
+- 주석
+    - {/* 주석 */}
+    ```{.js}
+    import React, { Component } from 'react';
+
+    class App extends Component {
+        render() {
+            return (
+            <div>
+                {/* 주석은 이렇게 */}
+                <h1
+                // 태그 사이에
+                >리액트</h1>
+            </div>
+            );
+        }
+    }
+
+    export default App;
+    ```
