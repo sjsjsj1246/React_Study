@@ -11,4 +11,4 @@ Study react and organization
 
 **book**
 - leraning react
-    ![](img\learning-react.jpg)
+    ![](img/learning-react.jpg)
